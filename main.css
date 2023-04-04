@@ -10,18 +10,20 @@ body {
 
 .container {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-areas: ". middle .";
-
+  grid-template-columns: 1fr 4fr 1fr;
+  grid-template-areas:
+    ". middle ."
+    ". taskrow .";
   width: 100%;
   text-align: center;
   justify-items: center;
+
   align-items: center;
 }
 
 h2 {
   padding: 0.5em;
-  font-size: 30px;
+  font-size: 40px;
   margin-top: 3em;
   background-color: #576140e1;
   text-align: center;
@@ -31,14 +33,14 @@ h2 {
   margin-top: 2em;
   padding: 10px;
   display: flex;
-  width: 100%;
+  width: 60%;
   justify-content: center;
-  background-color: #282524e1;
   grid-area: middle;
+  background-color: #282524e1;
+  gap: 10px;
 }
 
 .inputBox input {
-  height: 80%;
   justify-content: center;
   background-color: antiquewhite;
 }
@@ -49,10 +51,16 @@ h2 {
 
 .taskStyle {
   display: flex;
-  padding: 20px;
+  padding: 5px;
   color: antiquewhite;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
 }
 
 .alignmentGrid {
-  grid-area: middle;
+  grid-area: taskrow;
+  background-color: #282524e1;
+  width: 61.6%;
 }
