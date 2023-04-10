@@ -1,9 +1,11 @@
 const taskListElement = document.getElementById("taskList");
 const addTaskElement = document.getElementById("addTask");
 const inputElement = document.getElementById("inputField");
+
 let taskList = [];
 
 readFromStorage(taskList);
+
 //the following 2 lines of code are adapted from https://stackoverflow.com/questions/256754/how-to-pass-arguments-to-addeventlistener-listener-function
 addTaskElement.addEventListener("click", function () {
   addTaskToList("", inputElement.value, false, false);
@@ -21,17 +23,19 @@ function createTask(id, taskName, complete, fromStorage) {
   //outside div
   const divElement = document.createElement("div");
   divElement.classList.add("designTask");
+  taskListElement.appendChild(divElement);
   //the next line of code is adapted from https://stackoverflow.com/questions/3231459/how-can-i-create-unique-ids-with-javascript
   if (id === "") {
     divElement.id = new Date().getTime();
   } else {
     divElement.id = id;
   }
-  taskListElement.appendChild(divElement);
 
   //checkmark element
   const checkmarkElement = document.createElement("p");
   checkmarkElement.innerText = "⚪";
+  divElement.appendChild(checkmarkElement);
+
   //marking the task as done
   checkmarkElement.addEventListener("click", () => {
     if (complete === false) {
@@ -42,11 +46,12 @@ function createTask(id, taskName, complete, fromStorage) {
       complete = false;
     }
   });
-  divElement.appendChild(checkmarkElement);
 
   //remove element
   const removeElement = document.createElement("p");
   removeElement.innerText = "❌";
+  divElement.appendChild(removeElement);
+
   //function to remove the task
   removeElement.addEventListener("click", () => {
     const divElementToRemove = document.getElementById(
@@ -55,7 +60,6 @@ function createTask(id, taskName, complete, fromStorage) {
     divElement.parentNode.removeChild(divElementToRemove);
     removeFromStorage(divElementToRemove.id);
   });
-  divElement.appendChild(removeElement);
 
   //Task name element
   const taskNameElement = document.createElement("span");
