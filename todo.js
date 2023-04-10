@@ -1,8 +1,8 @@
 const taskListElement = document.getElementById("taskList");
 const addTaskElement = document.getElementById("addTask");
 const inputElement = document.getElementById("inputField");
-
 let taskList = [];
+
 readFromStorage(taskList);
 //the following 2 lines of code are adapted from https://stackoverflow.com/questions/256754/how-to-pass-arguments-to-addeventlistener-listener-function
 addTaskElement.addEventListener("click", function () {
@@ -18,12 +18,7 @@ function addTaskToList(id, taskName, complete, fromStorage) {
 }
 
 function createTask(id, taskName, complete, fromStorage) {
-  /* <div class="designTask">
-          <p>⚪</p>
-          <p>❌</p>
-          <span>Task</span>
-        </div> */
-
+  //outside div
   const divElement = document.createElement("div");
   divElement.classList.add("designTask");
   //the next line of code is adapted from https://stackoverflow.com/questions/3231459/how-can-i-create-unique-ids-with-javascript
@@ -32,9 +27,9 @@ function createTask(id, taskName, complete, fromStorage) {
   } else {
     divElement.id = id;
   }
-
   taskListElement.appendChild(divElement);
 
+  //checkmark
   const checkmarkElement = document.createElement("p");
   checkmarkElement.innerText = "⚪";
 
@@ -50,6 +45,7 @@ function createTask(id, taskName, complete, fromStorage) {
   });
   divElement.appendChild(checkmarkElement);
 
+  //remove
   const removeElement = document.createElement("p");
   removeElement.innerText = "❌";
   //function to remove the task
@@ -62,19 +58,18 @@ function createTask(id, taskName, complete, fromStorage) {
   });
   divElement.appendChild(removeElement);
 
+  //Task Name
   const taskNameElement = document.createElement("span");
   taskNameElement.innerText = taskName;
   divElement.appendChild(taskNameElement);
 
-  taskList.push(JSON.stringify(divElement));
-
+  //object of the task for storing
   const divElementId = divElement.id;
   let task = {
     name: taskName,
     complete: complete,
     id: divElementId,
   };
-
   let taskStr = JSON.stringify(task);
 
   //checking if the element has already been stored
