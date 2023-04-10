@@ -5,7 +5,7 @@ const inputElement = document.getElementById("inputField");
 let taskList = [];
 readFromStorage(taskList);
 //the following 2 lines of code are adapted from https://stackoverflow.com/questions/256754/how-to-pass-arguments-to-addeventlistener-listener-function
-addTaskElement.addEventListener("click", function() {
+addTaskElement.addEventListener("click", function () {
   addTaskToList("", inputElement.value, false, false);
 });
 
@@ -54,7 +54,9 @@ function createTask(id, taskName, complete, fromStorage) {
   removeElement.innerText = "❌";
   //function to remove the task
   removeElement.addEventListener("click", () => {
-    const divElementToRemove = document.getElementById(removeElement.parentNode.id);
+    const divElementToRemove = document.getElementById(
+      removeElement.parentNode.id
+    );
     divElement.parentNode.removeChild(divElementToRemove);
     removeFromStorage(divElementToRemove.id);
   });
@@ -70,10 +72,12 @@ function createTask(id, taskName, complete, fromStorage) {
   let task = {
     name: taskName,
     complete: complete,
-    id: divElementId
+    id: divElementId,
   };
 
   let taskStr = JSON.stringify(task);
+
+  //checking if the element has already been stored
   if (fromStorage === false) {
     addToStorage(taskStr, divElementId);
   }
@@ -85,14 +89,14 @@ function addToStorage(taskStr, divElementId) {
 
 function readFromStorage(taskList) {
   //getting all the keys from localStorage, using the keys to get the items and then pushing the items to the taskList
-  //search cite
+  //the following 5 lines of code are adaped from https://stackoverflow.com/questions/46340004/localstorage-get-every-value-from-each-key
   let keys = Object.keys(localStorage);
   let i = keys.length;
   while (i--) {
     taskList.push(localStorage.getItem(keys[i]));
   }
   //getting the information from the string to object and send it to the function to add to UI
-  taskList.forEach(task => {
+  taskList.forEach((task) => {
     let jsonTask = JSON.parse(task);
     addTaskToList(jsonTask["id"], jsonTask["name"], jsonTask["complete"], true);
   });
@@ -101,4 +105,3 @@ function readFromStorage(taskList) {
 function removeFromStorage(divElementId) {
   localStorage.removeItem(divElementId);
 }
-
