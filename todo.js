@@ -4,7 +4,7 @@ const inputElement = document.getElementById("inputField");
 
 let taskList = [];
 readFromStorage(taskList);
-
+//the following 2 lines of code are adapted from https://stackoverflow.com/questions/256754/how-to-pass-arguments-to-addeventlistener-listener-function
 addTaskElement.addEventListener("click", function() {
   addTaskToList("", inputElement.value, false, false);
 });
@@ -26,7 +26,7 @@ function createTask(id, taskName, complete, fromStorage) {
 
   const divElement = document.createElement("div");
   divElement.classList.add("designTask");
-  //the next line of code is from https://stackoverflow.com/questions/3231459/how-can-i-create-unique-ids-with-javascript
+  //the next line of code is adapted from https://stackoverflow.com/questions/3231459/how-can-i-create-unique-ids-with-javascript
   if (id === "") {
     divElement.id = new Date().getTime();
   } else {
@@ -85,6 +85,7 @@ function addToStorage(taskStr, divElementId) {
 
 function readFromStorage(taskList) {
   //getting all the keys from localStorage, using the keys to get the items and then pushing the items to the taskList
+  //search cite
   let keys = Object.keys(localStorage);
   let i = keys.length;
   while (i--) {
@@ -100,3 +101,4 @@ function readFromStorage(taskList) {
 function removeFromStorage(divElementId) {
   localStorage.removeItem(divElementId);
 }
+
