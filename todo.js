@@ -2,29 +2,22 @@ const taskListElement = document.getElementById("taskList");
 const addTaskElement = document.getElementById("addTask");
 const inputElement = document.getElementById("inputField");
 
-//string the data in an array?
 let taskList = [];
 readFromStorage(taskList);
 
-taskList.forEach(task => {
-  let jsonTask = JSON.parse(task);
-  addTaskToList(jsonTask["id"], jsonTask["name"], jsonTask["complete"], true);
+addTaskElement.addEventListener("click", function() {
+  addTaskToList("", inputElement.value, false, false);
 });
 
-addTaskElement.addEventListener("click", function() {addTaskToList("", inputElement.value, false, false);});
-
 function addTaskToList(id, taskName, complete, fromStorage) {
-  console.log(taskName);
-  /* let taskName = inputElement.value; */
   inputElement.value = "";
-  console.log("click works");
-  /* console.log(id, taskName, complete, fromStorage); */
+
   if (taskName.length > 0) {
-    createTask(id,taskName, complete, fromStorage);
+    createTask(id, taskName, complete, fromStorage);
   }
 }
 
-function createTask(id,taskName, complete, fromStorage) {
+function createTask(id, taskName, complete, fromStorage) {
   /* <div class="designTask">
           <p>⚪</p>
           <p>❌</p>
@@ -34,12 +27,12 @@ function createTask(id,taskName, complete, fromStorage) {
   const divElement = document.createElement("div");
   divElement.classList.add("designTask");
   //the next line of code is from https://stackoverflow.com/questions/3231459/how-can-i-create-unique-ids-with-javascript
-  if (id ==="") {
+  if (id === "") {
     divElement.id = new Date().getTime();
   } else {
     divElement.id = id;
   }
-  
+
   taskListElement.appendChild(divElement);
 
   const checkmarkElement = document.createElement("p");
@@ -61,7 +54,6 @@ function createTask(id,taskName, complete, fromStorage) {
   removeElement.innerText = "❌";
   //function to remove the task
   removeElement.addEventListener("click", () => {
-    console.log(removeElement.parentNode.id);
     const divElementToRemove = document.getElementById(removeElement.parentNode.id);
     divElement.parentNode.removeChild(divElementToRemove);
     removeFromStorage(divElementToRemove.id);
@@ -70,10 +62,10 @@ function createTask(id,taskName, complete, fromStorage) {
 
   const taskNameElement = document.createElement("span");
   taskNameElement.innerText = taskName;
-
   divElement.appendChild(taskNameElement);
+
   taskList.push(JSON.stringify(divElement));
-  console.log(JSON.stringify(divElement));
+
   const divElementId = divElement.id;
   let task = {
     name: taskName,
@@ -82,9 +74,9 @@ function createTask(id,taskName, complete, fromStorage) {
   };
 
   let taskStr = JSON.stringify(task);
-   if (fromStorage === false) {
+  if (fromStorage === false) {
     addToStorage(taskStr, divElementId);
-  } 
+  }
 }
 
 function addToStorage(taskStr, divElementId) {
@@ -92,12 +84,17 @@ function addToStorage(taskStr, divElementId) {
 }
 
 function readFromStorage(taskList) {
+  //getting all the keys from localStorage, using the keys to get the items and then pushing the items to the taskList
   let keys = Object.keys(localStorage);
   let i = keys.length;
   while (i--) {
     taskList.push(localStorage.getItem(keys[i]));
-    //   console.log(localStorage.getItem(keys[i]));
   }
+  //getting the information from the string to object and send it to the function to add to UI
+  taskList.forEach(task => {
+    let jsonTask = JSON.parse(task);
+    addTaskToList(jsonTask["id"], jsonTask["name"], jsonTask["complete"], true);
+  });
 }
 
 function removeFromStorage(divElementId) {
