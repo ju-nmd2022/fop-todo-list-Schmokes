@@ -6,7 +6,7 @@ let taskList = [];
 
 readFromStorage(taskList);
 
-//the following 2 lines of code are adapted from https://stackoverflow.com/questions/256754/how-to-pass-arguments-to-addeventlistener-listener-function
+//the following 2 lines of code are adapted from https://stackoverflow.com/questions/256754/how-to-pass-arguments-to-addeventlistener-listener-function, accessed: 10-04-23
 addTaskElement.addEventListener("click", function () {
   addTaskToList("", inputElement.value, false, false);
 });
@@ -24,7 +24,7 @@ function createTask(id, taskName, complete, fromStorage) {
   const divElement = document.createElement("div");
   divElement.classList.add("designTask");
   taskListElement.appendChild(divElement);
-  //the next line of code is adapted from https://stackoverflow.com/questions/3231459/how-can-i-create-unique-ids-with-javascript
+  //the next line of code is adapted from https://stackoverflow.com/questions/3231459/how-can-i-create-unique-ids-with-javascript, accessed: 10-04-23
   if (id === "") {
     divElement.id = new Date().getTime();
   } else {
@@ -87,7 +87,7 @@ function addToStorage(taskStr, divElementId) {
 
 function readFromStorage(taskList) {
   //getting all the keys from localStorage, using the keys to get the items and then pushing the items to the taskList
-  //the following 5 lines of code are adaped from https://stackoverflow.com/questions/46340004/localstorage-get-every-value-from-each-key
+  //the following 5 lines of code are adaped from https://stackoverflow.com/questions/46340004/localstorage-get-every-value-from-each-key, accessed: 10-04-23
   let keys = Object.keys(localStorage);
   let i = keys.length;
   while (i--) {
