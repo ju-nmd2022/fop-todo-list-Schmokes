@@ -4,20 +4,27 @@ const inputElement = document.getElementById("inputField");
 
 //string the data in an array?
 let taskList = [];
-readFromStorage();
-addTaskElement.addEventListener("click", addTaskToList);
+readFromStorage(taskList);
 
-function addTaskToList() {
-  /* taskListElement.innerHTML = ""; */
-  let taskName = inputElement.value;
-  inputElement.value = "";
+taskList.forEach(task => {
+  let jsonTask = JSON.parse(task);
+  addTaskToList(jsonTask["id"], jsonTask["name"], jsonTask["complete"], true);
+});
+
+addTaskElement.addEventListener("click", function() {addTaskToList("", inputElement.value, false, false);});
+
+function addTaskToList(id, taskName, complete, fromStorage) {
   console.log(taskName);
+  /* let taskName = inputElement.value; */
+  inputElement.value = "";
+  console.log("click works");
+  /* console.log(id, taskName, complete, fromStorage); */
   if (taskName.length > 0) {
-    createTask(taskName);
+    createTask(id,taskName, complete, fromStorage);
   }
 }
 
-function createTask(taskName) {
+function createTask(id,taskName, complete, fromStorage) {
   /* <div class="designTask">
           <p>⚪</p>
           <p>❌</p>
@@ -27,21 +34,25 @@ function createTask(taskName) {
   const divElement = document.createElement("div");
   divElement.classList.add("designTask");
   //the next line of code is from https://stackoverflow.com/questions/3231459/how-can-i-create-unique-ids-with-javascript
-  divElement.id = new Date().getTime();
+  if (id ==="") {
+    divElement.id = new Date().getTime();
+  } else {
+    divElement.id = id;
+  }
+  
   taskListElement.appendChild(divElement);
 
-  let taskDone = false;
   const checkmarkElement = document.createElement("p");
   checkmarkElement.innerText = "⚪";
 
   //marking the task as done
   checkmarkElement.addEventListener("click", () => {
-    if (taskDone === false) {
+    if (complete === false) {
       checkmarkElement.innerText = "🌸";
-      taskDone = true;
-    } else if (taskDone === true) {
+      complete = true;
+    } else if (complete === true) {
       checkmarkElement.innerText = "⚪";
-      taskDone = false;
+      complete = false;
     }
   });
   divElement.appendChild(checkmarkElement);
@@ -57,29 +68,37 @@ function createTask(taskName) {
   });
   divElement.appendChild(removeElement);
 
-  const storedTasksJSON = localStorage.getItem("Tasks");
-  const storedTasks = JSON.parse(storedTasksJSON);
-
   const taskNameElement = document.createElement("span");
   taskNameElement.innerText = taskName;
 
   divElement.appendChild(taskNameElement);
   taskList.push(JSON.stringify(divElement));
   console.log(JSON.stringify(divElement));
+  const divElementId = divElement.id;
   let task = {
     name: taskName,
-    complete: taskDone
+    complete: complete,
+    id: divElementId
   };
-  const divElementId = divElement.id;
+
   let taskStr = JSON.stringify(task);
-  addToStorage(taskStr, divElementId);
+   if (fromStorage === false) {
+    addToStorage(taskStr, divElementId);
+  } 
 }
 
 function addToStorage(taskStr, divElementId) {
   localStorage.setItem(divElementId, taskStr);
 }
 
-function readFromStorage() {}
+function readFromStorage(taskList) {
+  let keys = Object.keys(localStorage);
+  let i = keys.length;
+  while (i--) {
+    taskList.push(localStorage.getItem(keys[i]));
+    //   console.log(localStorage.getItem(keys[i]));
+  }
+}
 
 function removeFromStorage(divElementId) {
   localStorage.removeItem(divElementId);
