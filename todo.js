@@ -4,7 +4,7 @@ const inputElement = document.getElementById("inputField");
 
 //string the data in an array?
 let taskList = [];
-
+readFromStorage();
 addTaskElement.addEventListener("click", addTaskToList);
 
 function addTaskToList() {
@@ -13,10 +13,7 @@ function addTaskToList() {
   inputElement.value = "";
   console.log(taskName);
   if (taskName.length > 0) {
-    /*  taskList.push(taskName);
-    localStorage.setItem("Tasks", JSON.stringify(taskList)); */
     createTask(taskName);
-    console.log("click works");
   }
 }
 
@@ -26,13 +23,12 @@ function createTask(taskName) {
           <p>❌</p>
           <span>Task</span>
         </div> */
-  console.log("in create task");
+
   const divElement = document.createElement("div");
   divElement.classList.add("designTask");
   //the next line of code is from https://stackoverflow.com/questions/3231459/how-can-i-create-unique-ids-with-javascript
   divElement.id = new Date().getTime();
   taskListElement.appendChild(divElement);
-  console.log("div element");
 
   let taskDone = false;
   const checkmarkElement = document.createElement("p");
@@ -49,18 +45,17 @@ function createTask(taskName) {
     }
   });
   divElement.appendChild(checkmarkElement);
-  console.log("checkmark element");
 
   const removeElement = document.createElement("p");
   removeElement.innerText = "❌";
   //function to remove the task
   removeElement.addEventListener("click", () => {
     console.log(removeElement.parentNode.id);
-    const divElementId = document.getElementById(removeElement.parentNode.id);
-    divElement.parentNode.removeChild(divElementId);
+    const divElementToRemove = document.getElementById(removeElement.parentNode.id);
+    divElement.parentNode.removeChild(divElementToRemove);
+    removeFromStorage(divElementToRemove.id);
   });
   divElement.appendChild(removeElement);
-  console.log("remove element");
 
   const storedTasksJSON = localStorage.getItem("Tasks");
   const storedTasks = JSON.parse(storedTasksJSON);
@@ -69,6 +64,23 @@ function createTask(taskName) {
   taskNameElement.innerText = taskName;
 
   divElement.appendChild(taskNameElement);
+  taskList.push(JSON.stringify(divElement));
+  console.log(JSON.stringify(divElement));
+  let task = {
+    name: taskName,
+    complete: taskDone
+  };
+  const divElementId = divElement.id;
+  let taskStr = JSON.stringify(task);
+  addToStorage(taskStr, divElementId);
+}
 
-  //function for removing the task
+function addToStorage(taskStr, divElementId) {
+  localStorage.setItem(divElementId, taskStr);
+}
+
+function readFromStorage() {}
+
+function removeFromStorage(divElementId) {
+  localStorage.removeItem(divElementId);
 }
