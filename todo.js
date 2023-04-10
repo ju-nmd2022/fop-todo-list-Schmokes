@@ -29,10 +29,9 @@ function createTask(id, taskName, complete, fromStorage) {
   }
   taskListElement.appendChild(divElement);
 
-  //checkmark
+  //checkmark element
   const checkmarkElement = document.createElement("p");
   checkmarkElement.innerText = "⚪";
-
   //marking the task as done
   checkmarkElement.addEventListener("click", () => {
     if (complete === false) {
@@ -45,7 +44,7 @@ function createTask(id, taskName, complete, fromStorage) {
   });
   divElement.appendChild(checkmarkElement);
 
-  //remove
+  //remove element
   const removeElement = document.createElement("p");
   removeElement.innerText = "❌";
   //function to remove the task
@@ -58,7 +57,7 @@ function createTask(id, taskName, complete, fromStorage) {
   });
   divElement.appendChild(removeElement);
 
-  //Task Name
+  //Task name element
   const taskNameElement = document.createElement("span");
   taskNameElement.innerText = taskName;
   divElement.appendChild(taskNameElement);
