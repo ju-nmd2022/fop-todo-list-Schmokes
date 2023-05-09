@@ -33,19 +33,12 @@ function createTask(id, taskName, complete, fromStorage) {
 
   //checkmark element
   const checkmarkElement = document.createElement("p");
-  checkmarkElement.innerText = "⚪";
+  if (complete === false) {
+    checkmarkElement.innerText = "⚪";
+  } else if (complete === true) {
+    checkmarkElement.innerText = "🌸";
+  }
   divElement.appendChild(checkmarkElement);
-
-  //marking the task as done
-  checkmarkElement.addEventListener("click", () => {
-    if (complete === false) {
-      checkmarkElement.innerText = "🌸";
-      complete = true;
-    } else if (complete === true) {
-      checkmarkElement.innerText = "⚪";
-      complete = false;
-    }
-  });
 
   //remove element
   const removeElement = document.createElement("p");
@@ -79,6 +72,21 @@ function createTask(id, taskName, complete, fromStorage) {
   if (fromStorage === false) {
     addToStorage(taskStr, divElementId);
   }
+
+  //marking the task as done
+  checkmarkElement.addEventListener("click", () => {
+    if (complete === false) {
+      checkmarkElement.innerText = "🌸";
+      complete = true;
+    } else if (complete === true) {
+      checkmarkElement.innerText = "⚪";
+      complete = false;
+    }
+    //The next 3 lines of code were done with the help of ChatGPT
+    task.complete = complete;
+    taskStr = JSON.stringify(task);
+    addToStorage(taskStr, divElementId);
+  });
 }
 
 function addToStorage(taskStr, divElementId) {
